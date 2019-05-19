@@ -1,11 +1,7 @@
 from random import random
 import math
 
-#  takes an array which specify the number of nodes for each layer and creates an Artificial Neural Network
-#  starting weights are random
-#  model[layers][nodes]
-#  model[layers][nodes]['a'] activation
-# model[layers][nodes]['w'][1,2,3] weights
+
 def rmatdot(r,c):
     m1 = r
     m2 = []
@@ -33,6 +29,13 @@ def matdot(m1,m2):
 
 def sigmoid(x):
     return 1/(1+math.exp(-x))
+
+#  Define the hyperparameters
+#  takes an array which specify the number of nodes for each layer and creates an Artificial Neural Network
+#  starting weights are random
+#  model[layers][nodes]
+#  model[layers][nodes]['a'] activation
+# model[layers][nodes]['w'][1,2,3] weights
 
 def buildANN(nodes = []):
     model = []
@@ -75,13 +78,31 @@ def forward(model):
                 model[x+1][z]['a'] = sigmoid(a2[z])
     return model
 
+# accepts an array of the differences, set them to 1 for completely active and 0 shouldn't be active
+def getCost(model,diff = []):
+    cost = 0
+    outputs  = getOutputs(model)
+    if len(diff) != len(outputs): return False
 
+    for x in diff:
+        d = (outputs[x]['a']-diff[x])
+        cost += d*d
+    return cost
 
+#print("Running ANN")
+#ann = buildANN([20,15,20,10])
 
+#ann = setInputs(ann,[1,2,3,4,5,1,2,3,4,5,1,2,3,4,5,1,2,3,4,5])
+#if ann == False : exit("Wrong number of inputs")
+#ann = forward(ann)
+#print(*getOutputs(ann))
+#cost = getCost(ann,[1,0,0,0,1,0,0,0,0,0])
+#if cost == False : exit("Wrong number of differences")
+#print(cost)
 
-print("Running ANN")
-ann = buildANN([2,2])
+#ann = buildANN([2,3,10])
 
-ann = setInputs(ann,[2,3])
-ann = forward(ann)
-print(*getOutputs(ann))
+#ann = setInputs(ann,[1,2])
+#if ann == False : exit("Wrong number of inputs")
+#ann = forward(ann)
+#print(getCost(ann,[1,0]))
